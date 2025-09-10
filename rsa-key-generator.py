@@ -3,7 +3,7 @@ import random
 import math
 
 def generateKeys(digits):
-    p = sympy.randprime((10 ** digits), 10 ** (digits + 3))
+    p = sympy.randprime((10 ** digits - 1), 10 ** (digits))
     q = p
     while q == p:
         q = sympy.randprime((10 ** digits), 10 ** (digits + 3))
