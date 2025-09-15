@@ -1,3 +1,7 @@
+from Crypto.Random import get_random_bytes
+from Crypto.Cipher import AES
+""
+
 def convert_number_to_string(number):
     n = number
     b = []
@@ -17,8 +21,26 @@ with open("rsakey.private", 'r') as file:
 fileToDecrypt = input("File to decrypt: ")
 
 with open(fileToDecrypt, 'r') as file:
-    c = int(file.read())
-    message = pow(c, d, n)
+    data = file.read()
+    ciphertext, encryptedKey, nonce = data.split(', ')
+    
+    nonce = convert_number_to_string(int(nonce))
+    nonce = nonce[2:-1]
+    nonce = nonce.encode("latin1").decode("unicode_escape").encode("latin1")
+
+    key = convert_number_to_string(pow(int(encryptedKey), d, n))
+    key = key[2:-1]
+    key = key.encode("latin1").decode("unicode_escape").encode("latin1")
+
+    cipher = AES.new(key, AES.MODE_CTR, nonce=nonce)  
+
+    ciphertext = convert_number_to_string(int(ciphertext))
+    ciphertext = ciphertext[2:-1]
+    ciphertext = ciphertext.encode("latin1").decode("unicode_escape").encode("latin1")
+
+    
+
+    message = cipher.decrypt(ciphertext)
 
 with open(f"{fileToDecrypt}.decrypted", 'w') as file:
-    file.writelines(convert_number_to_string(message))
+    file.writelines(message.decode())
