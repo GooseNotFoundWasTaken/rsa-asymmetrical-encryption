@@ -22,6 +22,8 @@ def generateKeys(digits):
                         generateKeys(digits)
     return p, q, n, e
 
+print("Generating keys...")
+
 p, q, n, e = generateKeys(600)
 
 r = (p - 1) * (q - 1)
@@ -29,7 +31,11 @@ r = (p - 1) * (q - 1)
 # private exponent
 d = pow(e, -1, r)
 
+print("Writing to file...")
+
 with open("rsakey.public", "w") as file:
     file.write(f"{n}, {e}")
 with open("rsakey.private", "w") as file:
     file.write(f"{n}, {d}")
+
+print("Done!")

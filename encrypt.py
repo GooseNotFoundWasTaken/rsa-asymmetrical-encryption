@@ -24,10 +24,14 @@ with open(fileToEncrypt, 'r') as file:
 
     nonce = cipher.nonce
 
+print("Reading public key...")
+
 with open("rsakey.public", 'r') as file:
     data = file.read().split(", ")
     n, e = int(data[0]), int(data[1])
     encryptedKey = pow(convert_string_to_numbers(str(key)), e, n)
+
+print(f"Public key accepted! Writing encrypted content to {fileToEncrypt}.encrypted")
 
 with open(f"{fileToEncrypt}.encrypted", 'w') as file:
     file.writelines(f"{convert_string_to_numbers(str(ciphertext))}, {encryptedKey}, {convert_string_to_numbers(str(nonce))}")
