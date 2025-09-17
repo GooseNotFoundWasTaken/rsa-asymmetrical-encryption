@@ -1,0 +1,1 @@
+Here is where you put the folders containing your contacts' public keys. Each contact should have their own separate folder. The 'John Smith' and 'Mike Hawk' folder can be deleted and is only to show the formatting of the contact list.

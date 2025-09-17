@@ -1,5 +1,6 @@
 from Crypto.Random import get_random_bytes
 from Crypto.Cipher import AES
+import os
 
 def convert_number_to_string(number):
     n = number
@@ -15,13 +16,15 @@ def convert_number_to_string(number):
 
 print("Reading private key...")
 
-with open("rsakey.private", 'r') as file:
+with open("private/rsakey.private", 'r') as file:
     data = file.read().split(", ")
     n, d = int(data[0]), int(data[1])
 
 print("Private key accepted!")
 
 fileToDecrypt = input("File to decrypt: ")
+
+input("Are you sure you want to decrypt this file? If this file hasn't been encrypted it may be hard to retreive.\nPress Enter to continute or ctrl+c to exit.")
 
 with open(fileToDecrypt, 'r') as file:
     data = file.read()
@@ -43,7 +46,13 @@ with open(fileToDecrypt, 'r') as file:
 
     message = cipher.decrypt(ciphertext)
     
-print(f"Writing decrypted content to {fileToDecrypt}.decrypted ")
+print(f"Writing decrypted content to {fileToDecrypt}")
 
-with open(f"{fileToDecrypt}.decrypted", 'w') as file:
+os.remove(fileToDecrypt)
+
+with open(f"{fileToDecrypt}", 'w') as file:
     file.writelines(message.decode())
+
+print("Done!")
+
+input("Press Enter to exit.")

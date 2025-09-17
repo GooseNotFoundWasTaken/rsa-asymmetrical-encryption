@@ -39,3 +39,5 @@ with open("rsakey.private", "w") as file:
     file.write(f"{n}, {d}")
 
 print("Done!")
+
+input("Press Enter to exit.")

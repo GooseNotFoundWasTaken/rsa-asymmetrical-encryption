@@ -1,5 +1,6 @@
 from Crypto.Random import get_random_bytes
 from Crypto.Cipher import AES
+import os
 
 def convert_string_to_numbers(string):
     b = []
@@ -11,6 +12,10 @@ def convert_string_to_numbers(string):
     return num
 
 fileToEncrypt = input("File to encrypt: ")
+
+folder = input("Who are you encrypting this message for?: ")
+
+input("Are you sure you want to encrypt this file? It's original contents will be wiped and cannot be retreived without the private key (which you shouldn't have).\nPress Enter to continute or ctrl+c to exit.")
 
 with open(fileToEncrypt, 'r') as file:
     
@@ -26,12 +31,17 @@ with open(fileToEncrypt, 'r') as file:
 
 print("Reading public key...")
 
-with open("rsakey.public", 'r') as file:
+with open(f"contacts/{folder}/rsakey.public", 'r') as file:
     data = file.read().split(", ")
     n, e = int(data[0]), int(data[1])
     encryptedKey = pow(convert_string_to_numbers(str(key)), e, n)
 
-print(f"Public key accepted! Writing encrypted content to {fileToEncrypt}.encrypted")
+print(f"Public key accepted! Replacing '{fileToEncrypt}' with encrypted message.)")
 
-with open(f"{fileToEncrypt}.encrypted", 'w') as file:
+os.remove(fileToEncrypt)
+
+with open(f"{fileToEncrypt}", 'w') as file:
+    
     file.writelines(f"{convert_string_to_numbers(str(ciphertext))}, {encryptedKey}, {convert_string_to_numbers(str(nonce))}")
+
+input("Press Enter to Exit.")
